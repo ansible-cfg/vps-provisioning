@@ -14,7 +14,6 @@
       - golang
       - lsof
       - make
-      - openssh-server
       - openssl
       - python3
       - tcpdump
