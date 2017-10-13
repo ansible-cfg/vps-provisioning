@@ -1,5 +1,5 @@
 ---
-- name: install packages
+- name: manage system packages
   hosts: vps
   become: yes
   vars:
@@ -14,11 +14,11 @@
       - golang
       - lsof
       - make
+      - nmap
       - openssl
       - python3
       - tcpdump
       - tmux
-      - tor
       - vim
       - whois
       - zsh

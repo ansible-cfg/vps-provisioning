@@ -1,0 +1,39 @@
+---
+- name: add tor apt sources
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  with_items:
+    - deb http://deb.torproject.org/torproject.org xenial main
+    - deb-src http://deb.torproject.org/torproject.org xenial main
+
+- name: add tor signing key
+  apt_key:
+    keyserver: keys.gnupg.net
+    id: A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89
+
+- name: install tor
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items:
+    - tor
+    - deb.torproject.org-keyring
+
+- name: configure tor as a hidden service
+  lineinfile:
+    path: /etc/tor/torrc
+    regexp: "^{{ item.value.directive }}"
+    line: "{{ item.value.directive }} {{ item.value.option }}"
+  with_dict: "{{ hidden_service_config }}"
+  notify:
+    - restart tor
+
+- name: get the hidden service name
+  command: cat /var/lib/tor/hidden_service/hostname
+  register: hidden_service_name
+
+- name: output hidden service name
+  debug:
+    msg: "hidden service name is {{ hidden_service_name.stdout }}"

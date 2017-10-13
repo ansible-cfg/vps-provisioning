@@ -1,0 +1,8 @@
+---
+hidden_service_config:
+  dir:
+    directive: HiddenServiceDir
+    option: /var/lib/tor/hidden_service/
+  port:
+    directive: HiddenServicePort
+    option: 22 127.0.0.1:22
