@@ -1,0 +1,46 @@
+---
+- name: install packages
+  hosts: vps
+  become: yes
+  vars:
+    packages:
+      - autoconf
+      - bash
+      - curl
+      - dnsutils
+      - gcc
+      - git
+      - gnupg
+      - golang
+      - lsof
+      - make
+      - openssh-server
+      - openssl
+      - python3
+      - tcpdump
+      - tmux
+      - tor
+      - vim
+      - whois
+      - zsh
+
+  tasks:
+    - name: install packages
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+        cache_valid_time: 3600
+      with_items: "{{ packages }}"
+
+    - name: upgrade packages
+      apt:
+        upgrade: dist
+
+    - name: clean apt cache
+      apt:
+        autoclean: yes
+
+    - name: remove unneeded deps
+      apt:
+        autoremove: yes

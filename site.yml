@@ -1,0 +1,6 @@
+---
+- name: provision vps
+  hosts: vps
+  become: yes
+
+- import_playbook: packages.yml
